@@ -59,8 +59,8 @@ Accent: #475569 (Gray)
 
 ```bash
 # 1. Clone repository
-git clone <repository-url>
-cd kpro-v1
+git clone https://github.com/Vudangkhoa0910/KPro-Manager.git
+cd KPro-Manager
 
 # 2. Cài đặt dependencies
 npm install
@@ -203,7 +203,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 **Developer**: Vudangkhoa  
 **Project**: KPro Remote Manager  
-**Repository**: [kpro-v1](https://github.com/Vudangkhoa0910/kpro-v1)
+**Repository**: [KPro-Manager](https://github.com/Vudangkhoa0910/KPro-Manager)
 
 ---
 
