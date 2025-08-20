@@ -1,87 +1,69 @@
 import { useState } from "react";
-import KProLogo from "@/components/KProLogo";
-import ConnectionPanel from "@/components/ConnectionPanel";
-import FileManager from "@/components/FileManager";
-import CodeEditor from "@/components/CodeEditor";
-import Terminal from "@/components/Terminal";
-import TaskPanel from "@/components/TaskPanel";
-
-interface ConnectionConfig {
-  host: string;
-  user: string;
-  password: string;
-  port: number;
-}
+import Sidebar from "@/components/Sidebar";
+import WindowManager from "@/components/WindowManager";
+import { SSHConnection } from "@/services/sshService";
+import { SSHProvider } from "@/contexts/SSHContext";
 
 const Index = () => {
+  const [currentConnection, setCurrentConnection] = useState<SSHConnection | null>(null);
   const [isConnected, setIsConnected] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("connection");
 
-  const handleConnect = (config: ConnectionConfig) => {
-    // Simulate connection
+  const handleConnect = (connection: SSHConnection) => {
+    setCurrentConnection(connection);
     setIsConnected(true);
-    console.log("Connecting to:", config);
+  };
+
+  // Handle window creation from Sidebar
+  const handleOpenWindow = (type: string, title: string) => {
+    console.log(`Opening window: ${type} - ${title}`);
+    
+    // Wait a moment for WindowManager to initialize global functions
+    setTimeout(() => {
+      const windowManager = (window as any).kproWindowManager;
+      
+      if (windowManager) {
+        switch (type) {
+          case 'connection':
+            windowManager.openConnection();
+            break;
+          case 'filemanager':
+            windowManager.openFileManager();
+            break;
+          case 'editor':
+            windowManager.openCodeEditor();
+            break;
+          case 'terminal':
+            windowManager.openTerminal();
+            break;
+          case 'tasks':
+            windowManager.openTasks();
+            break;
+          default:
+            console.warn(`Unknown window type: ${type}`);
+        }
+      } else {
+        console.error('WindowManager not available yet. Please try again.');
+      }
+    }, 100);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-primary">
-      {/* Header */}
-      <header className="border-b border-accent/20 bg-card/80 backdrop-blur-sm">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <KProLogo size="lg" />
-            <div className="text-right">
-              <h1 className="text-xl font-bold text-foreground">KPro Remote Manager</h1>
-              <p className="text-sm text-muted-foreground">SSH File Management & Development Tool</p>
-            </div>
-          </div>
+    <SSHProvider>
+      <div className="flex h-screen overflow-hidden bg-gradient-to-br from-blue-50 via-gray-100 to-white">
+        {/* Sidebar - Now absolute positioned */}
+        <Sidebar 
+          activeSection={activeSection}
+          onOpenWindow={handleOpenWindow}
+        />
+        
+        {/* Main Content Area with WindowManager */}
+        <div className="flex-1 relative ml-80">          
+          {/* WindowManager handles all draggable windows and top tab bar */}
+          <WindowManager />
         </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="container mx-auto px-6 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Connection Panel */}
-          <div className="lg:col-span-1">
-            <ConnectionPanel onConnect={handleConnect} isConnected={isConnected} />
-          </div>
-
-          {/* File Manager */}
-          <div className="lg:col-span-2">
-            <FileManager />
-          </div>
-
-          {/* Code Editor */}
-          <div className="lg:col-span-2">
-            <CodeEditor />
-          </div>
-
-          {/* Terminal */}
-          <div className="lg:col-span-1">
-            <Terminal />
-          </div>
-
-          {/* Task Panel */}
-          <div className="lg:col-span-3">
-            <TaskPanel />
-          </div>
-        </div>
-      </main>
-
-      {/* Footer */}
-      <footer className="border-t border-accent/20 bg-card/50 backdrop-blur-sm mt-12">
-        <div className="container mx-auto px-6 py-6">
-          <div className="flex items-center justify-between text-sm text-muted-foreground">
-            <div className="flex items-center gap-4">
-              <KProLogo size="sm" />
-              <span>© 2024 KPro Remote Manager</span>
-            </div>
-            <div>
-              Built with React & TypeScript
-            </div>
-          </div>
-        </div>
-      </footer>
-    </div>
+      </div>
+    </SSHProvider>
   );
 };
 

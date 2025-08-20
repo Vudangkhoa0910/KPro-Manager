@@ -1,0 +1,44 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="faviconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0F172A;stop-opacity:1" />
+      <stop offset="30%" style="stop-color:#1E293B;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#60A5FA;stop-opacity:1" />
+    </linearGradient>
+    
+    <filter id="faviconGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <filter id="innerShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feOffset dx="0" dy="1"/>
+      <feGaussianBlur stdDeviation="1" result="offset-blur"/>
+      <feFlood flood-color="#000000" flood-opacity="0.3"/>
+      <feComposite in2="offset-blur" operator="in"/>
+      <feMerge> 
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Modern rounded square background -->
+  <rect width="32" height="32" rx="10" fill="url(#faviconGradient)" filter="url(#innerShadow)"/>
+  
+  <!-- Stylized "K" with modern design -->
+  <g filter="url(#faviconGlow)">
+    <!-- Main vertical line -->
+    <line x1="8" y1="6" x2="8" y2="26" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+    <!-- Top diagonal -->
+    <line x1="8" y1="16" x2="20" y2="6" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Bottom diagonal -->
+    <line x1="8" y1="16" x2="20" y2="26" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Modern accent dot -->
+    <circle cx="24" cy="10" r="2" fill="#60A5FA" opacity="0.8"/>
+  </g>
+</svg>
